@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Pintura JavaScript example project</title>
+        <link
+            rel="stylesheet"
+            href="./node_modules/@pqina/pintura/pintura.css"
+        />
+        <style>
+            /* Generic document styles */
+            html {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                    Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+                    'Segoe UI Emoji', 'Segoe UI Symbol';
+                font-size: 16px;
+                line-height: 1.5;
+            }
+
+            body {
+                padding: 1em;
+            }
+
+            img {
+                max-width: 100%;
+            }
+
+            /* Pintura bright / dark theme */
+            .pintura-editor {
+                --color-background: 255, 255, 255;
+                --color-foreground: 10, 10, 10;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                html {
+                    color: #fff;
+                    background: #111;
+                }
+
+                .pintura-editor {
+                    --color-background: 10, 10, 10;
+                    --color-foreground: 255, 255, 255;
+                }
+            }
+
+            /* <pintura-input> Basic styles */
+
+            /* The empty state grey box */
+            pintura-input.basic [data-empty] {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #eee;
+            }
+
+            /* To make each state equal size */
+            pintura-input.basic [data-empty],
+            pintura-input.basic img {
+                width: 400px;
+                height: 300px;
+                object-fit: cover;
+            }
+
+            /* <pintura-input> Hopper styles */
+            pintura-input.hopper {
+                position: relative;
+                display: block;
+                width: 400px;
+                height: 300px;
+                border-radius: 1em;
+                overflow: hidden;
+                background-color: #eee;
+            }
+
+            pintura-input.hopper img,
+            pintura-input.hopper > div {
+                width: inherit;
+                height: inherit;
+            }
+
+            pintura-input.hopper img {
+                object-fit: cover;
+            }
+
+            pintura-input.hopper button {
+                object-fit: cover;
+                cursor: pointer;
+                border: none;
+                font: inherit;
+                font-size: inherit;
+                padding: 0;
+                margin: 0;
+            }
+
+            /* The empty state box */
+            pintura-input.hopper [data-empty] {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            /* The "drag n drop" and "save status" text */
+            pintura-input.hopper p {
+                margin: 1em;
+                user-select: none;
+                text-align: center;
+                color: #333;
+            }
+
+            /* The save status text */
+            pintura-input.hopper [role='status'] {
+                position: absolute;
+                top: 0em;
+                left: 0em;
+                right: 0em;
+                font-size: 0.875em;
+                border-radius: 1em;
+                background: #fff;
+            }
+
+            /* To make the browse button look like text */
+            pintura-input.hopper [data-browse] {
+                color: inherit;
+                background: transparent;
+                text-decoration: underline;
+            }
+
+            /* To show buttons at the bottom of the image */
+            pintura-input.hopper span {
+                position: absolute;
+                bottom: 1em;
+                left: 1em;
+                right: 1em;
+                display: flex;
+                justify-content: center;
+            }
+
+            /* Style of the buttons */
+            pintura-input.hopper span button {
+                margin: 0 0.5em;
+                background: black;
+                color: white;
+                padding: 0.25em 0.75em;
+                font-size: 0.875em;
+                border-radius: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Pintura Input Example</h1>
+
+        <h2>Input</h2>
+
+        <pintura-input image-crop-aspect-ratio="4/3"></pintura-input>
+
+        <h2>Custom input</h2>
+
+        <pintura-input image-crop-aspect-ratio="4/3">
+            <input type="file" id="my-id" required />
+        </pintura-input>
+
+        <h2>Basic</h2>
+
+        <pintura-input
+            class="basic"
+            src="image.jpeg"
+            name="my_field"
+            image-crop-aspect-ratio="4/3"
+        >
+            <template>
+                <div data-empty data-drop>
+                    <p>
+                        Drag &amp; Drop your image here or
+                        <button type="button" data-browse>Browse</button>
+                    </p>
+                </div>
+                <div data-load>
+                    <img src="image.jpeg" width="300" alt="" />
+                    <div>
+                        <button type="button" data-remove>Remove</button>
+                        <button type="button" data-edit>Edit</button>
+                    </div>
+                </div>
+                <output data-process>
+                    <img src="{url}" width="300" alt="" />
+                    <p role="status">"{filename}" saved</p>
+                    <div>
+                        <button type="button" data-remove>Remove</button>
+                        <button type="button" data-edit>Edit</button>
+                    </div>
+                </output>
+            </template>
+        </pintura-input>
+
+        <h2>Hopper</h2>
+
+        <pintura-input
+            class="hopper"
+            src="image.jpeg"
+            name="my_field"
+            store="/upload"
+            image-crop-aspect-ratio="4/3"
+        >
+            <template>
+                <div data-empty data-drop>
+                    <p>
+                        Drag &amp; Drop your image here or
+                        <button type="button" data-browse>Browse</button>
+                    </p>
+                </div>
+                <div data-load>
+                    <img src="image.jpeg" width="300" alt="" />
+                    <span>
+                        <button type="button" data-remove>Remove</button>
+                        <button type="button" data-edit>Edit</button>
+                    </span>
+                </div>
+                <output data-process>
+                    <img src="{url}" width="300" alt="" />
+                    <p role="status">"{filename}" uploaded successfully</p>
+                    <span>
+                        <button type="button" data-remove>Remove</button>
+                        <button type="button" data-edit>Edit</button>
+                    </span>
+                </output>
+            </template>
+        </pintura-input>
+
+        <script src="./node_modules/@pqina/pintura/pintura-iife.js"></script>
+        <script src="./node_modules/@pqina/pintura-input/dist/pinturainput-iife.js"></script>
+    </body>
+</html>
