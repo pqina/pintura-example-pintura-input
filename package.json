@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@pqina/pintura": "^8.x",
-        "@pqina/pintura-input": "^9.0.0"
+        "@pqina/pintura-input": "^9.x"
     },
     "devDependencies": {
         "http-server": "^14.1.1"
